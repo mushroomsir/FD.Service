@@ -1,0 +1,7 @@
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\bin\FdServiceTest.dll
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\bin\FdServiceTest.pdb
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\bin\FD.Service.dll
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\bin\FD.Service.pdb
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\obj\Release\FdServiceDemo.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\obj\Release\FdServiceTest.dll
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\obj\Release\FdServiceTest.pdb

@@ -1,0 +1,12 @@
+E:\ctclass\CtClass\FD.Service\bin\Release\FD.Service.dll
+E:\ctclass\CtClass\FD.Service\bin\Release\FD.Service.pdb
+E:\ctclass\CtClass\FD.Service\obj\Release\FD.Service.dll
+E:\ctclass\CtClass\FD.Service\obj\Release\FD.Service.pdb
+E:\cctalk\trunk\FD.Service\bin\Release\FD.Service.dll
+E:\cctalk\trunk\FD.Service\bin\Release\FD.Service.pdb
+E:\cctalk\trunk\FD.Service\obj\Release\FD.Service.dll
+E:\cctalk\trunk\FD.Service\obj\Release\FD.Service.pdb
+C:\Users\Administrator\Desktop\fdsource\FD.Service\bin\Release\FD.Service.dll
+C:\Users\Administrator\Desktop\fdsource\FD.Service\bin\Release\FD.Service.pdb
+C:\Users\Administrator\Desktop\fdsource\FD.Service\obj\Release\FD.Service.dll
+C:\Users\Administrator\Desktop\fdsource\FD.Service\obj\Release\FD.Service.pdb

@@ -1,0 +1,14 @@
+C:\Users\mushroom\Desktop\source\FdServiceDemo\bin\FdServiceTest.dll
+C:\Users\mushroom\Desktop\source\FdServiceDemo\bin\FdServiceTest.pdb
+C:\Users\mushroom\Desktop\source\FdServiceDemo\bin\FD.Service.dll
+C:\Users\mushroom\Desktop\source\FdServiceDemo\bin\FD.Service.pdb
+C:\Users\mushroom\Desktop\source\FdServiceDemo\obj\Debug\FdServiceDemo.csprojResolveAssemblyReference.cache
+C:\Users\mushroom\Desktop\source\FdServiceDemo\obj\Debug\FdServiceTest.dll
+C:\Users\mushroom\Desktop\source\FdServiceDemo\obj\Debug\FdServiceTest.pdb
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\bin\FdServiceTest.dll
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\bin\FdServiceTest.pdb
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\bin\FD.Service.dll
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\bin\FD.Service.pdb
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\obj\Debug\FdServiceDemo.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\obj\Debug\FdServiceTest.dll
+C:\Users\Administrator\Desktop\fdsource\FdServiceDemo\obj\Debug\FdServiceTest.pdb

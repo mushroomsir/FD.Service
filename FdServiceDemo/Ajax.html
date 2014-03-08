@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <div id="textDetail"></div>
+    
+    <div id="textUserName"></div>
+    
+    
+</body>
+</html>
+<script src="/js/jquery-1.7.1.min.js"></script>
+<script type='text/javascript'>
+    $(function() {
+
+        //$.get("/fdapi/TestApi.GetDetail.ashx", { userId: 123 }, function(data) {
+        //    $("#textDetail").html(data);
+        //});
+
+        //$.get("/fdapi/TestApi.GetUserName.ashx", null, function(data) {
+        //    $("#textUserName").html(data);
+        //});
+        
+        //$.get("/fdapi/TestApi.RequestTest.ashx?a=1", null, function (data) {
+        //    $("#textUserName").append("<br/>"+data);
+        //});
+        $.get("/fdapi/TestApi.DecimalTest.ashx?money_a=1.111", null, function (data) {
+            $("#textUserName").append("<br/>" + data);
+        });
+        $.get("/fdapi/TestApi.objecttest.ashx", null, function (data) {
+            $("#textUserName").append("<br/>" + data);
+        });
+
+        $.get("/fdapi/TestApi.GenericListTest.ashx", null, function (data) {
+            $("#textUserName").append("<br/>" + data);
+        });
+
+        $.get("/fdapi/TestApi.EnumTest.ashx", null, function (data) {
+            $("#textUserName").append("<br/>" + data);
+        });
+    });
+
+</script>
