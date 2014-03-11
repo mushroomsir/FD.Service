@@ -35,7 +35,14 @@ namespace FD.Service
                 paramslist[i] = Convert.ChangeType(values, type);
 
             }
-            context.Response.AddHeader("Content-Type", "text/html; charset=utf-8");
+            if (string.IsNullOrEmpty(context.Request.ContentType))
+            {
+                context.Response.AddHeader("Content-Type", "text/html; charset=utf-8");
+            }
+            else
+            {
+                context.Response.ContentType = context.Request.ContentType;
+            }
             object result = null;
             try
             {

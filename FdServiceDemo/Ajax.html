@@ -26,20 +26,33 @@
         //$.get("/fdapi/TestApi.RequestTest.ashx?a=1", null, function (data) {
         //    $("#textUserName").append("<br/>"+data);
         //});
-        $.get("/fdapi/TestApi.DecimalTest.ashx?money_a=1.111", null, function (data) {
-            $("#textUserName").append("<br/>" + data);
-        });
-        $.get("/fdapi/TestApi.objecttest.ashx", null, function (data) {
-            $("#textUserName").append("<br/>" + data);
-        });
+        //$.get("/fdapi/TestApi.DecimalTest.ashx?money_a=1.111", null, function (data) {
+        //    $("#textUserName").append("<br/>" + data);
+        //});
+        //$.get("/fdapi/TestApi.objecttest.ashx", null, function (data) {
+        //    $("#textUserName").append("<br/>" + data);
+        //});
 
-        $.get("/fdapi/TestApi.GenericListTest.ashx", null, function (data) {
-            $("#textUserName").append("<br/>" + data);
-        });
+        //$.get("/fdapi/TestApi.GenericListTest.ashx", null, function (data) {
+        //    $("#textUserName").append("<br/>" + data);
+        //});
 
-        $.get("/fdapi/TestApi.EnumTest.ashx", null, function (data) {
-            $("#textUserName").append("<br/>" + data);
-        });
+        //$.get("/fdapi/TestApi.EnumTest.ashx", null, function (data) {
+        //    $("#textUserName").append("<br/>" + data);
+        //});
+
+        $.ajax({
+            type: "POST",
+            url: "/fdapi/TestApi.ContentTypeTest.ashx",
+            data: $('#DetailForm').serialize(),
+            contentType: "text/plain; charset=utf-8",
+            success: function (data) {
+                $("#textUserName").append("<br/>" + data);
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
     });
 
 </script>

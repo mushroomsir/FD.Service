@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using FD.Service;
 using System.Collections.Generic;
+using System;
 
 namespace FdServiceTest.api
 {
@@ -61,6 +62,11 @@ namespace FdServiceTest.api
         public static Statu EnumTest()
         {
             return Statu.alive;
+        }
+        [FdMethod]
+        public static string ContentTypeTest()
+        {
+            return "佚名";
         }
     }
     public class Person
