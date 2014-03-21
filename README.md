@@ -1,6 +1,8 @@
 FD.Service
 ==========
 
+最新引用dll版本 1.0.0.2
+
 简单的FD.Service例子
 
 
