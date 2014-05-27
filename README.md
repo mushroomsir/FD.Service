@@ -1,41 +1,36 @@
 FD.Service
 ==========
 
-最新引用dll版本 1.0.0.2
 
-简单的FD.Service例子
+Simple FD.Service example
 
 
-在webconfig里配置
 ```webconfig
-<system.webServer>
-    <handlers>
-      <add name="fdService" verb="POST,GET" path="/fdapi/*.ashx" type="FD.Service.HandlerFactory, FD.Service" />
-    </handlers>
-</system.webServer>	
+ <system.webServer>
+    <modules>
+     <add name="UrlRoutingModule" type="FD.Service.UrlRoutingModule,FD.Service"/>
+    </modules>
+  </system.webServer>
 ````
-
-对外公开Api接口
 
 
 ```csharp
 
 [FdService]
-public class TestApi
-{
-        [FdMethod]
-        public static string GetUserName()
+public class SchoolApi
+{      
+         [FdMethod]
+        public static string GetTeacherName()
         {
-            return "佚名";
+            return "Odin";
         }
 }
 ````
-调用方法
+
 ````javascript
-$.get("/fdapi/TestApi.GetUserName.ashx",null, function(data) {
-      alert(data);
+$.get("/api/SchoolApi/GetTeacherName/", null, function (data) {
+            $("#textDetail").append("GetTeacherName: " + data);
 });
 ````
-其他更多使用方法，参考示例->[例子](https://github.com/mushroomsir/FD.Service/blob/master/FdServiceDemo/api/TestApi.cs)
 
 
