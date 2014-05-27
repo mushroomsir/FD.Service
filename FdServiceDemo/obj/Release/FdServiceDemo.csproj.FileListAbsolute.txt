@@ -12,3 +12,10 @@ C:\Users\Administrator\Desktop\fd\FD.Service\FdServiceDemo\bin\FD.Service.pdb
 C:\Users\Administrator\Desktop\fd\FD.Service\FdServiceDemo\obj\Release\FdServiceDemo.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\fd\FD.Service\FdServiceDemo\obj\Release\FdServiceTest.dll
 C:\Users\Administrator\Desktop\fd\FD.Service\FdServiceDemo\obj\Release\FdServiceTest.pdb
+D:\fd\FD.Service\FdServiceDemo\bin\FdServiceTest.dll
+D:\fd\FD.Service\FdServiceDemo\bin\FdServiceTest.pdb
+D:\fd\FD.Service\FdServiceDemo\bin\FD.Service.dll
+D:\fd\FD.Service\FdServiceDemo\bin\FD.Service.pdb
+D:\fd\FD.Service\FdServiceDemo\obj\Release\FdServiceDemo.csprojResolveAssemblyReference.cache
+D:\fd\FD.Service\FdServiceDemo\obj\Release\FdServiceTest.dll
+D:\fd\FD.Service\FdServiceDemo\obj\Release\FdServiceTest.pdb

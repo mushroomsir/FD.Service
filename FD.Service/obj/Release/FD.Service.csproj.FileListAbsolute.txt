@@ -15,3 +15,7 @@ C:\Users\Administrator\Desktop\fd\FD.Service\FD.Service\bin\Release\FD.Service.p
 C:\Users\Administrator\Desktop\fd\FD.Service\FD.Service\obj\Release\FD.Service.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\fd\FD.Service\FD.Service\obj\Release\FD.Service.dll
 C:\Users\Administrator\Desktop\fd\FD.Service\FD.Service\obj\Release\FD.Service.pdb
+D:\fd\FD.Service\FD.Service\obj\Release\FD.Service.dll
+D:\fd\FD.Service\FD.Service\obj\Release\FD.Service.pdb
+D:\fd\FD.Service\FD.Service\bin\Release\FD.Service.dll
+D:\fd\FD.Service\FD.Service\bin\Release\FD.Service.pdb

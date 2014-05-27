@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
 namespace FD.Service
 {
@@ -15,5 +16,10 @@ namespace FD.Service
 			throw new HttpException(404,
 				"没有找到能处理请求的服务类，当前请求地址：" + context.Request.RawUrl);
 		}
+
+        public static void ThrowNotFoundService(Exception ex)
+        {
+            throw new SystemException("内部发生错误",ex);
+        }
 	}
 }

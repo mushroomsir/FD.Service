@@ -7,126 +7,121 @@ using System.Web.Compilation;
 
 namespace FD.Service
 {
-	internal class ReflectionHelper
-	{
-		private static List<TypeAndAttrInfo> s_typeList;
+    internal class ReflectionHelper
+    {
+        private static List<TypeAndAttrInfo> TypeList = new List<TypeAndAttrInfo>(256);
+        private static Hashtable MethodTable = Hashtable.Synchronized(new Hashtable(4096, StringComparer.OrdinalIgnoreCase));
 
-		static ReflectionHelper()
-		{
-			InitServiceTypes();
-		}
+        static ReflectionHelper()
+        {
+            InitServiceTypes();
+        }
 
-		
-		private static void InitServiceTypes()
-		{
-			s_typeList = new List<TypeAndAttrInfo>(256);
+        private static void InitServiceTypes()
+        {
+            var assemblies = BuildManager.GetReferencedAssemblies();
 
-			ICollection assemblies = BuildManager.GetReferencedAssemblies();
-			foreach (Assembly assembly in assemblies)
-			{
-				if (assembly.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase))
-				{
-					continue;
-				}
-				try
-				{
-					(from t in assembly.GetExportedTypes()
-					 let a = t.GetCustomAttributes(typeof(FdServiceAttribute), false) as FdServiceAttribute[]
-					 where a.Length > 0
-					 select new TypeAndAttrInfo
-					 {
-						 ServiceType = t,
-						 Attr = a[0],
-					 }
-					 ).ToList().ForEach(b => s_typeList.Add(b));
-				}
-				catch { }
-			}
-		}
+            foreach (Assembly assembly in assemblies)
+            {
+                if (assembly.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase))
+                    continue;
 
-		
-		/// <summary>
-		/// 获取参数构造信息
-		/// </summary>
-		/// <param name="pair"></param>
-		/// <returns></returns>
-		public static InvokeInfo GetInvokeInfo(NamesPair pair)
-		{
-			if (pair == null)
-				throw new ArgumentNullException("pair");
+                FoundFdService(assembly);
+            }
+        }
 
-			InvokeInfo vkInfo = new InvokeInfo();
+        private static void FoundFdService(Assembly assembly)
+        {
+            try
+            {
+                var typeList = from t in assembly.GetExportedTypes()
+                               let a = t.GetCustomAttributes(typeof(FdServiceAttribute), false) as FdServiceAttribute[]
+                               where a.Length > 0
+                               select new TypeAndAttrInfo
+                               {
+                                   ServiceType = t,
+                                   Attr = a[0],
+                               };
 
-			vkInfo.ServiceTypeInfo = GetServiceType(pair.ServiceName);
-			if (vkInfo.ServiceTypeInfo == null)
-				return null;
+                foreach (var item in typeList)
+                {
+                    TypeList.Add(item);
+                }
 
-			vkInfo.MethodAttrInfo = GetServiceMethod(vkInfo.ServiceTypeInfo.ServiceType, pair.MethodName);
-			if (vkInfo.MethodAttrInfo == null)
-				return null;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.ThrowNotFoundService(ex);
+            }
+        }
 
+        internal static InvokeInfo GetInvokeInfo(NamesPair pair)
+        {
+            if (pair == null)
+                throw new ArgumentNullException("pair");
 
-			if (vkInfo.MethodAttrInfo.MethodInfo.IsStatic == false)
-				vkInfo.ServiceInstance = Activator.CreateInstance(vkInfo.ServiceTypeInfo.ServiceType);
+            InvokeInfo vkInfo = new InvokeInfo();
 
-			return vkInfo;
-		}
-		#region  信息获取
-		
-		private static TypeAndAttrInfo GetServiceType(string typeName)
-		{
-			if (string.IsNullOrEmpty(typeName))
-				throw new ArgumentNullException("typeName");
+            vkInfo.ServiceTypeInfo = GetServiceType(pair.ServiceName);
+            if (vkInfo.ServiceTypeInfo == null)
+                return null;
+
+            vkInfo.MethodAttrInfo = GetServiceMethod(vkInfo.ServiceTypeInfo.ServiceType, pair.MethodName);
+            if (vkInfo.MethodAttrInfo == null)
+                return null;
 
 
-			
-			if (typeName.IndexOf('.') > 0)
-				return s_typeList.FirstOrDefault(t => string.Compare(t.ServiceType.FullName, typeName, true) == 0);
-			else
-				return s_typeList.FirstOrDefault(t => string.Compare(t.ServiceType.Name, typeName, true) == 0);
-		}
+            if (vkInfo.MethodAttrInfo.MethodInfo.IsStatic == false)
+                vkInfo.ServiceInstance = Activator.CreateInstance(vkInfo.ServiceTypeInfo.ServiceType);
+
+            return vkInfo;
+        }
+        private static TypeAndAttrInfo GetServiceType(string typeName)
+        {
+            if (string.IsNullOrEmpty(typeName))
+                throw new ArgumentNullException("typeName");
 
 
 
-		private static Hashtable s_methodTable = Hashtable.Synchronized(new Hashtable(4096, StringComparer.OrdinalIgnoreCase));
+            if (typeName.IndexOf('.') > 0)
+                return TypeList.FirstOrDefault(t => string.Compare(t.ServiceType.FullName, typeName, true) == 0);
+            else
+                return TypeList.FirstOrDefault(t => string.Compare(t.ServiceType.Name, typeName, true) == 0);
+        }
 
-	
-		private static MethodAndAttrInfo GetServiceMethod(Type type, string methodName)
-		{
-			if (type == null)
-				throw new ArgumentNullException("type");
-			if (string.IsNullOrEmpty(methodName))
-				throw new ArgumentNullException("methodName");
+        private static MethodAndAttrInfo GetServiceMethod(Type type, string methodName)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+            if (string.IsNullOrEmpty(methodName))
+                throw new ArgumentNullException("methodName");
 
-			
-			string key = methodName + "@" + type.FullName;
-			MethodAndAttrInfo mi = (MethodAndAttrInfo)s_methodTable[key];
 
-			if (mi == null)
-			{
-				
-				MethodInfo method = type.GetMethod(methodName,
-						 BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+            string key = methodName + "@" + type.FullName;
+            MethodAndAttrInfo mi = MethodTable[key] as MethodAndAttrInfo;
 
-				if (method == null)
-					return null;
+            if (mi != null)
+                return mi;
 
-				FdMethodAttribute[] attrs = method.GetCustomAttributes(typeof(FdMethodAttribute), false) as FdMethodAttribute[];
-				if (attrs.Length != 1)
-					return null;
+            MethodInfo method = type.GetMethod(methodName,BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
-				mi = new MethodAndAttrInfo
-				{
-					MethodInfo = method,
-					Parameters = method.GetParameters(),
-					Attr = attrs[0]
-				};
+            if (method == null)
+                return null;
 
-				s_methodTable[key] = mi;
-			}
+            FdMethodAttribute[] attrs = method.GetCustomAttributes(typeof(FdMethodAttribute), false) as FdMethodAttribute[];
+            if (attrs.Length != 1)
+                return null;
 
-			return mi;
-		}
-		#endregion 
-	}
+            mi = new MethodAndAttrInfo
+            {
+                MethodInfo = method,
+                Parameters = method.GetParameters(),
+                Attr = attrs[0]
+            };
+
+            MethodTable[key] = mi;
+
+            return mi;
+        }
+    }
 }

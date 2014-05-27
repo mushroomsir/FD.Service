@@ -6,53 +6,57 @@
 <body>
     <div id="textDetail"></div>
     
-    <div id="textUserName"></div>
-    
-    
+  
 </body>
 </html>
 <script src="/js/jquery-1.7.1.min.js"></script>
 <script type='text/javascript'>
     $(function() {
 
-        //$.get("/fdapi/TestApi.GetDetail.ashx", { userId: 123 }, function(data) {
-        //    $("#textDetail").html(data);
-        //});
 
-        //$.get("/fdapi/TestApi.GetUserName.ashx", null, function(data) {
-        //    $("#textUserName").html(data);
-        //});
-        
-        //$.get("/fdapi/TestApi.RequestTest.ashx?a=1", null, function (data) {
-        //    $("#textUserName").append("<br/>"+data);
-        //});
-        //$.get("/fdapi/TestApi.DecimalTest.ashx?money_a=1.111", null, function (data) {
-        //    $("#textUserName").append("<br/>" + data);
-        //});
-        //$.get("/fdapi/TestApi.objecttest.ashx", null, function (data) {
-        //    $("#textUserName").append("<br/>" + data);
-        //});
+        $.get("/api/SchoolApi/GetTeacherName/", null, function (data) {
+            $("#textDetail").append("GetTeacherName: " + data);
+        });
 
-        //$.get("/fdapi/TestApi.GenericListTest.ashx", null, function (data) {
-        //    $("#textUserName").append("<br/>" + data);
-        //});
+        $.get("/api/SchoolApi/GetNameById/", { StudentId: 123 }, function (data) {
+            $("#textDetail").append("<br/>GetNameById:" + data);
+        });
 
-        //$.get("/fdapi/TestApi.EnumTest.ashx", null, function (data) {
-        //    $("#textUserName").append("<br/>" + data);
-        //});
+        $.get("/api/SchoolApi/GetSelfName/?selfname=Tyr", null, function (data) {
+            $("#textDetail").append("<br/>GetSelfName:" + data);
+        });
+     
+        $.get("/api/SchoolApi/GetScore/", {score:1.111}, function (data) {
+            $("#textDetail").append("<br/>GetScore:"+data);
+        });
+
+        $.get("/api/SchoolApi/GetTeacherInfo/", null, function (data) {
+            $("#textDetail").append("<br/>GetTeacherInfo:" + data);
+        });
+
+
+        $.get("/api/SchoolApi/GetStudentList/", null, function (data) {
+            $("#textDetail").append("<br/>GetStudentList:" + data);
+        });
+
+
+        $.get("/api/SchoolApi/GetStudentListByClassId/", {classId:1}, function (data) {
+            $("#textDetail").append("<br/>GetStudentListByClassId:" + data);
+        });
+
+        $.get("/api/SchoolApi/GetSchoolStatus/", null, function (data) {
+            $("#textDetail").append("<br/>GetSchoolStatus:" + data);
+        });
 
         $.ajax({
             type: "POST",
-            url: "/fdapi/TestApi.ContentTypeTest.ashx",
+            url: "/api/SchoolApi/ContentType/",
             data: $('#DetailForm').serialize(),
             contentType: "text/plain; charset=utf-8",
             success: function (data) {
-                $("#textUserName").append("<br/>" + data);
-            },
-            error: function (req, status, error) {
-                alert(error);
+                $("#textDetail").append("<br/>ContentType:" + data);
             }
-        });
+        });
     });
 
 </script>

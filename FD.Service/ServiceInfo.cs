@@ -19,18 +19,12 @@ namespace FD.Service
 		public NamesPair NamesPair { get; private set; }
 		public InvokeInfo InvokeInfo { get; private set; }
 	}
-	/// <summary>
-	/// 包含要调用的服务类型名称和方法名称的一个值对。
-	/// </summary>
+	
 	public class NamesPair
 	{
-		/// <summary>
-		/// 要调用的服务类名
-		/// </summary>
+		
 		public string ServiceName { get; set; }
-		/// <summary>
-		/// 要调用的服务方法名
-		/// </summary>
+		
 		public string MethodName { get; set; }
 	}
 	internal class InvokeInfo
@@ -44,9 +38,7 @@ namespace FD.Service
 		public Type ServiceType { get; set; }
 		public FdServiceAttribute Attr { get; set; }
 	}
-	/// <summary>
-	/// 调用方法的信息
-	/// </summary>
+	
 	internal class MethodAndAttrInfo
 	{
 		public MethodInfo MethodInfo { get; set; }

@@ -7,10 +7,5 @@ namespace FD.Service
 	{
 		public ResponseFormat ResponseFormat { get; set; }
 	}
-	public enum ResponseFormat
-	{
-		None = 0,
-		Json = 1,
-		//Xml = 2,
-	}
+	
 }
