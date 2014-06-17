@@ -83,7 +83,7 @@ namespace FD.Service
         private static object BuildResult(ServiceInfo info, object result)
         {
             var MethodAttrInfo = info.InvokeInfo.MethodAttrInfo;
-            if (MethodAttrInfo.MethodInfo.ReturnType.IsClass || MethodAttrInfo.Attr.ResponseFormat == ResponseFormat.Json)
+            if ((MethodAttrInfo.MethodInfo.ReturnType.IsClass && MethodAttrInfo.MethodInfo.ReturnType!=typeof(string)) || MethodAttrInfo.Attr.ResponseFormat == ResponseFormat.Json)
                 result = new JavaScriptSerializer().Serialize(result);
             else if (MethodAttrInfo.MethodInfo.ReturnType.IsEnum)
                 result = (int)result;
