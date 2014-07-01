@@ -101,6 +101,11 @@ namespace FD.Service
                     paramslist[i] = context.Request;
                     continue;
                 }
+                else if (type == typeof(HttpContext))
+                {
+                    paramslist[i] = context;
+                    continue;
+                }
                 var values = context.Request[destType[i].Name];
                 if (values == null)
                     throw new ArgumentNullException(destType[i].Name);
