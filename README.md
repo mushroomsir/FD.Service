@@ -1,7 +1,7 @@
 
 
 ##News
-July 20th: Version 1.0.0.4 is released.
+July 20th: Version 1.0.0.4 is released.<br /> 
 1.增加filter
 
 May 27th: Version 1.0.0.3 is released.
