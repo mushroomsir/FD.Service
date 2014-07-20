@@ -36,13 +36,15 @@ namespace FD.Service
 	internal class TypeAndAttrInfo
 	{
 		public Type ServiceType { get; set; }
-		public FdServiceAttribute Attr { get; set; }
+		public FdServiceAttribute ServiceAttr { get; set; }
+        public FdFilterAttribute[] FiltersAttr { get; set; }
 	}
 	
 	internal class MethodAndAttrInfo
 	{
 		public MethodInfo MethodInfo { get; set; }
-		public FdMethodAttribute Attr { get; set; }
+        public FdMethodAttribute MethodAttr { get; set; }
+        public FdFilterAttribute[] FiltersAttr { get; set; }
 		public ParameterInfo[] Parameters { get; set; }
 	}
 }

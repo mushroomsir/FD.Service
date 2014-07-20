@@ -36,11 +36,13 @@ namespace FD.Service
             {
                 var typeList = from t in assembly.GetExportedTypes()
                                let a = t.GetCustomAttributes(typeof(FdServiceAttribute), false) as FdServiceAttribute[]
+                               let b = t.GetCustomAttributes(typeof(FdFilterAttribute), true) as FdFilterAttribute[]
                                where a.Length > 0
                                select new TypeAndAttrInfo
                                {
                                    ServiceType = t,
-                                   Attr = a[0],
+                                   ServiceAttr = a[0],
+                                   FiltersAttr = b
                                };
 
                 foreach (var item in typeList)
@@ -96,27 +98,27 @@ namespace FD.Service
             if (string.IsNullOrEmpty(methodName))
                 throw new ArgumentNullException("methodName");
 
-
             string key = methodName + "@" + type.FullName;
             MethodAndAttrInfo mi = MethodTable[key] as MethodAndAttrInfo;
 
             if (mi != null)
                 return mi;
 
-            MethodInfo method = type.GetMethod(methodName,BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+            MethodInfo method = type.GetMethod(methodName, BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
             if (method == null)
                 return null;
 
-            FdMethodAttribute[] attrs = method.GetCustomAttributes(typeof(FdMethodAttribute), false) as FdMethodAttribute[];
-            if (attrs.Length != 1)
-                return null;
+            var attrs = method.GetCustomAttributes(typeof(FdMethodAttribute), false) as FdMethodAttribute[];
+
+            var filters = method.GetCustomAttributes(typeof(FdFilterAttribute), true) as FdFilterAttribute[];
 
             mi = new MethodAndAttrInfo
             {
                 MethodInfo = method,
                 Parameters = method.GetParameters(),
-                Attr = attrs[0]
+                MethodAttr = attrs[0],
+                FiltersAttr = filters
             };
 
             MethodTable[key] = mi;

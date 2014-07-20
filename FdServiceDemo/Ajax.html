@@ -14,48 +14,52 @@
     $(function() {
 
 
-        $.get("/api/SchoolApi/GetTeacherName/", null, function (data) {
-            $("#textDetail").append("GetTeacherName: " + data);
-        });
+        //$.get("/api/SchoolApi/GetTeacherName/", null, function (data) {
+        //    $("#textDetail").append("GetTeacherName: " + data);
+        //});
 
-        $.get("/api/SchoolApi/GetNameById/", { StudentId: 123 }, function (data) {
-            $("#textDetail").append("<br/>GetNameById:" + data);
-        });
+        //$.get("/api/SchoolApi/GetNameById/", { StudentId: 123 }, function (data) {
+        //    $("#textDetail").append("<br/>GetNameById:" + data);
+        //});
 
-        $.get("/api/SchoolApi/GetSelfName/?selfname=Tyr", null, function (data) {
-            $("#textDetail").append("<br/>GetSelfName:" + data);
-        });
+        //$.get("/api/SchoolApi/GetSelfName/?selfname=Tyr", null, function (data) {
+        //    $("#textDetail").append("<br/>GetSelfName:" + data);
+        //});
      
-        $.get("/api/SchoolApi/GetScore/", {score:1.111}, function (data) {
-            $("#textDetail").append("<br/>GetScore:"+data);
-        });
+        //$.get("/api/SchoolApi/GetScore/", {score:1.111}, function (data) {
+        //    $("#textDetail").append("<br/>GetScore:"+data);
+        //});
 
-        $.get("/api/SchoolApi/GetTeacherInfo/", null, function (data) {
-            $("#textDetail").append("<br/>GetTeacherInfo:" + data);
-        });
-
-
-        $.get("/api/SchoolApi/GetStudentList/", null, function (data) {
-            $("#textDetail").append("<br/>GetStudentList:" + data);
-        });
+        //$.get("/api/SchoolApi/GetTeacherInfo/", null, function (data) {
+        //    $("#textDetail").append("<br/>GetTeacherInfo:" + data);
+        //});
 
 
-        $.get("/api/SchoolApi/GetStudentListByClassId/", {classId:1}, function (data) {
-            $("#textDetail").append("<br/>GetStudentListByClassId:" + data);
-        });
+        //$.get("/api/SchoolApi/GetStudentList/", null, function (data) {
+        //    $("#textDetail").append("<br/>GetStudentList:" + data);
+        //});
 
-        $.get("/api/SchoolApi/GetSchoolStatus/", null, function (data) {
-            $("#textDetail").append("<br/>GetSchoolStatus:" + data);
-        });
 
-        $.ajax({
-            type: "POST",
-            url: "/api/SchoolApi/ContentType/",
-            data: $('#DetailForm').serialize(),
-            contentType: "text/plain; charset=utf-8",
-            success: function (data) {
-                $("#textDetail").append("<br/>ContentType:" + data);
-            }
+        //$.get("/api/SchoolApi/GetStudentListByClassId/", {classId:1}, function (data) {
+        //    $("#textDetail").append("<br/>GetStudentListByClassId:" + data);
+        //});
+
+        //$.get("/api/SchoolApi/GetSchoolStatus/", null, function (data) {
+        //    $("#textDetail").append("<br/>GetSchoolStatus:" + data);
+        //});
+
+        //$.ajax({
+        //    type: "POST",
+        //    url: "/api/SchoolApi/ContentType/",
+        //    data: $('#DetailForm').serialize(),
+        //    contentType: "text/plain; charset=utf-8",
+        //    success: function (data) {
+        //        $("#textDetail").append("<br/>ContentType:" + data);
+        //    }
+        //});
+
+        $.get("/api/SchoolApi/GetPointsByID/", { sid: 101, id: 100 }, function (data) {
+            $("#textDetail").append("<br/>GetPointsByID:" + data);
         });
     });
 

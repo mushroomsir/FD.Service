@@ -44,6 +44,7 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FdFilterAttribute.cs" />
     <Compile Include="ResponseFormat.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="FdMethodAttribute.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FdServiceAttribute.cs" />
     <Compile Include="ReflectionHelper.cs" />
+    <Compile Include="ResultContent.cs" />
     <Compile Include="ServiceExecutor.cs" />
     <Compile Include="ServiceHandler.cs" />
     <Compile Include="ServiceInfo.cs" />

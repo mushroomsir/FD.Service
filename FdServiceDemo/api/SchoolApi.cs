@@ -6,6 +6,7 @@ using System;
 namespace FdServiceTest.api
 {
     [FdService]
+    [Auth(Message="登录验证")]
     public class SchoolApi
     {
 
@@ -27,6 +28,7 @@ namespace FdServiceTest.api
             return request.QueryString["selfname"];
         }
         [FdMethod]
+       
         public static decimal GetScore(decimal score)
         {
             return score;
@@ -91,10 +93,17 @@ namespace FdServiceTest.api
         {
             return Statu.alive;
         }
-        [FdMethod]
+    [FdMethod]
         public static string ContentType()
         {
             return "Thor";
+        }
+        [FdMethod]
+        [Auth(Order = 1, Message = "权限验证")]
+        [log(Order = 2,Message="查询日志")]
+        public static int GetPointsByID(int id,int sid)
+        {
+            return 10;
         }
     }
     public class Student
