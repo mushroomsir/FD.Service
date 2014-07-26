@@ -1,6 +1,8 @@
 
 
 ##News
+July 20th: Version 1.0.0.4 is released.<br /> 
+1.增加filter
 
 May 27th: Version 1.0.0.3 is released.
 
@@ -18,21 +20,24 @@ Webconfig configuration：
 Method Statement：
 ```csharp
 [FdService]
+[Auth(Message="登录验证")]
 public class SchoolApi
 {      
-         [FdMethod]
-        public static string GetTeacherName()
+        [FdMethod]
+        [Auth(Order = 1, Message = "权限验证")]
+        [log(Order = 2,Message="查询日志")]
+        public static int GetPointsByID(int id,int sid)
         {
-            return "Odin";
+            return 10;
         }
 }
 ````
 
 Client invoke：
 ````javascript
-$.get("/api/SchoolApi/GetTeacherName/", null, function (data) {
-            $("#textDetail").append("GetTeacherName: " + data);
-});
+$.get("/api/SchoolApi/GetPointsByID/", { sid: 101, id: 100 }, function (data) {
+            $("#textDetail").append("<br/>GetPointsByID:" + data);
+ });
 ````
 
 
