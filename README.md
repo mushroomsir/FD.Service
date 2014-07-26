@@ -8,7 +8,7 @@ May 27th: Version 1.0.0.3 is released.
 
 
 ###Code samples
-Webconfig configuration：
+iis 7+  Webconfig configuration：
 ```webconfig   
 <system.webServer>
     <modules>
@@ -16,19 +16,44 @@ Webconfig configuration：
     </modules>
 </system.webServer>
 ````
+iis 6
+```webconfig   
+<system.web>
+ <httpModules>
+  <add name="UrlRoutingModule" type="FD.Service.UrlRoutingModule,FD.Service"/>
+ </<httpModules>
+</system.web>
+````
 
 Method Statement：
 ```csharp
-[FdService]
+[FdService(SessionMode = SessionMode.Support, IsPublicAllMethod = true)]
 [Auth(Message="登录验证")]
 public class SchoolApi
 {      
         [FdMethod]
         [Auth(Order = 1, Message = "权限验证")]
-        [log(Order = 2,Message="查询日志")]
-        public static int GetPointsByID(int id,int sid)
+        [log(Order = 2,Message="日志记录")]
+        public static int GetPointsByID(int id)
         {
             return 10;
+        }
+        [FdMethod(ResponseFormat = ResponseFormat.Json)]
+        public static List<Student> GetStudentList()
+        {
+            return new List<Student>()
+            {
+                new Student()
+                {
+                    Age = 13,
+                    Name = "LOKI"
+                },
+                new Student()
+                {
+                    Age = 14,
+                    Name = "Frigga"
+                }
+            };
         }
 }
 ````
