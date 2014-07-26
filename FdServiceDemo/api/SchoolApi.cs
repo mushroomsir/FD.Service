@@ -1,12 +1,12 @@
 ﻿using System.Web;
 using FD.Service;
 using System.Collections.Generic;
-using System;
 
 namespace FdServiceTest.api
 {
-    [FdService]
-    [Auth(Message="登录验证")]
+
+    [FdService(SessionMode = SessionMode.Support, IsPublicAllMethod = true)]
+    [Auth(Message = "登录验证")]
     public class SchoolApi
     {
 
@@ -17,9 +17,9 @@ namespace FdServiceTest.api
         }
 
         [FdMethod]
-        public string GetNameById(string StudentId)
+        public string GetNameById(string studentId)
         {
-            return  StudentId + ":loki";
+            return studentId + ":loki";
         }
 
         [FdMethod]
@@ -27,14 +27,15 @@ namespace FdServiceTest.api
         {
             return request.QueryString["selfname"];
         }
+
         [FdMethod]
-       
+
         public static decimal GetScore(decimal score)
         {
             return score;
         }
 
-        [FdMethod]
+        [FdMethod(ResponseFormat = ResponseFormat.Json)]
         public static Student GetTeacherInfo()
         {
             return new Student()
@@ -44,73 +45,95 @@ namespace FdServiceTest.api
             };
         }
 
-        [FdMethod]
+        [FdMethod(ResponseFormat = ResponseFormat.Json)]
         public static List<Student> GetStudentList()
         {
             return new List<Student>()
-            { 
+            {
                 new Student()
                 {
                     Age = 13,
                     Name = "LOKI"
                 },
-                 new Student()
+                new Student()
                 {
                     Age = 14,
                     Name = "Frigga"
                 }
             };
         }
-        [FdMethod]
+
+        [FdMethod(ResponseFormat = ResponseFormat.Json)]
         public static List<Student> GetStudentListByClassId(int classId)
         {
 
             if (classId == 1)
             {
                 return new List<Student>()
-               { 
-                 new Student()
                 {
-                    Age = 14,
-                    Name = "Frigga"
-                }
+                    new Student()
+                    {
+                        Age = 14,
+                        Name = "Frigga"
+                    }
                 };
             }
             else
             {
                 return new List<Student>()
-                { 
-                   new Student()
+                {
+                    new Student()
                     {
-                      Age = 13,
-                      Name = "LOKI"
-                     }
-              };
+                        Age = 13,
+                        Name = "LOKI"
+                    }
+                };
             }
         }
+
         [FdMethod]
         public static Statu GetSchoolStatus()
         {
             return Statu.alive;
         }
-    [FdMethod]
+
+        [FdMethod]
         public static string ContentType()
         {
             return "Thor";
         }
+
         [FdMethod]
         [Auth(Order = 1, Message = "权限验证")]
-        [log(Order = 2,Message="查询日志")]
-        public static int GetPointsByID(int id,int sid)
+        [log(Order = 2, Message = "日志记录")]
+        public static int GetPointsById(int id, int sid)
         {
             return 10;
         }
+
+        [FdMethod]
+        public static string SessionTest(HttpContext hc)
+        {
+            if (hc.Session != null)
+                return "Support Session";
+
+            return "Not Support Session";
+        }
+
+        public static object PublicMethod(HttpContext hc)
+        {
+            return "公开所有的方法";
+        }
+
+
     }
+
     public class Student
     {
         public string Name { get; set; }
         public int Age { get; set; }
     }
+
     public enum Statu
     {
         alive = 1,

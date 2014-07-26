@@ -13,53 +13,61 @@
 <script type='text/javascript'>
     $(function() {
 
-
-        //$.get("/api/SchoolApi/GetTeacherName/", null, function (data) {
-        //    $("#textDetail").append("GetTeacherName: " + data);
-        //});
-
-        //$.get("/api/SchoolApi/GetNameById/", { StudentId: 123 }, function (data) {
-        //    $("#textDetail").append("<br/>GetNameById:" + data);
-        //});
-
-        //$.get("/api/SchoolApi/GetSelfName/?selfname=Tyr", null, function (data) {
-        //    $("#textDetail").append("<br/>GetSelfName:" + data);
-        //});
-     
-        //$.get("/api/SchoolApi/GetScore/", {score:1.111}, function (data) {
-        //    $("#textDetail").append("<br/>GetScore:"+data);
-        //});
-
-        //$.get("/api/SchoolApi/GetTeacherInfo/", null, function (data) {
-        //    $("#textDetail").append("<br/>GetTeacherInfo:" + data);
-        //});
+       //$.get("/api/SchoolApi/GetTeacherName/", null, function(data) {
+       //     $("#textDetail").append("<br/>1:普通调用-GetTeacherName: " + data);
+       // });
 
 
-        //$.get("/api/SchoolApi/GetStudentList/", null, function (data) {
-        //    $("#textDetail").append("<br/>GetStudentList:" + data);
-        //});
+       //$.get("/api/SchoolApi/GetNameById/", { StudentId: 123 }, function(data) {
+       //     $("#textDetail").append("<br/>2:参数调用-GetNameById:" + data);
+       // });
+
+       //$.get("/api/SchoolApi/GetSelfName/?selfname=Tyr", null, function(data) {
+       //     $("#textDetail").append("<br/>3:HttpRequest调用-GetSelfName:" + data);
+       // });
+
+       //$.get("/api/SchoolApi/GetScore/", { score: 1.111 }, function(data) {
+       //     $("#textDetail").append("<br/>4:decimal调用-GetScore:" + data);
+       // });
+
+       //$.get("/api/SchoolApi/GetTeacherInfo/", null, function(data) {
+       //     $("#textDetail").append("<br/>5:默认对象序列化-GetTeacherInfo:" + data);
+       // });
 
 
-        //$.get("/api/SchoolApi/GetStudentListByClassId/", {classId:1}, function (data) {
-        //    $("#textDetail").append("<br/>GetStudentListByClassId:" + data);
-        //});
+       //$.get("/api/SchoolApi/GetStudentList/", null, function(data) {
+       //     $("#textDetail").append("<br/>6:指定集合序列化-GetStudentList:" + data);
+       // });
 
-        //$.get("/api/SchoolApi/GetSchoolStatus/", null, function (data) {
-        //    $("#textDetail").append("<br/>GetSchoolStatus:" + data);
-        //});
 
-        //$.ajax({
-        //    type: "POST",
-        //    url: "/api/SchoolApi/ContentType/",
-        //    data: $('#DetailForm').serialize(),
-        //    contentType: "text/plain; charset=utf-8",
-        //    success: function (data) {
-        //        $("#textDetail").append("<br/>ContentType:" + data);
-        //    }
-        //});
+       //$.get("/api/SchoolApi/GetStudentListByClassId/", { classId: 1 }, function(data) {
+       //     $("#textDetail").append("<br/>7:业务逻辑-GetStudentListByClassId:" + data);
+       // });
 
-        $.get("/api/SchoolApi/GetPointsByID/", { sid: 101, id: 100 }, function (data) {
-            $("#textDetail").append("<br/>GetPointsByID:" + data);
+       //$.get("/api/SchoolApi/GetSchoolStatus/", null, function(data) {
+       //     $("#textDetail").append("<br/>8:枚举支持-GetSchoolStatus:" + data);
+       // });
+       //$.ajax({
+       //     type: "POST",
+       //     url: "/api/SchoolApi/ContentType/",
+       //     data: $('#DetailForm').serialize(),
+       //     contentType: "text/plain; charset=utf-8",
+       //     success: function(data) {
+       //         $("#textDetail").append("<br/>9:自定义ContentType-ContentType:" + data);
+       //     }
+       // });
+
+       //$.get("/api/schoolapi/getpointsbyid/", { sid: 101, id: 100 }, function(data) {
+       //     $("#textDetail").append("<br/>10:权限验证，日志记录等filter-GetPointsByID:" + data);
+       // });
+
+
+       //$.get("/api/schoolapi/SessionTest/", null, function(data) {
+       //     $("#textDetail").append("<br/>11:session支持-SessionTest:" + data);
+       // });
+
+       $.get("/api/schoolapi/PublicMethod/", null, function(data) {
+            $("#textDetail").append("<br/>12:公开所有的方法-PublicMethod:" + data);
         });
     });
 

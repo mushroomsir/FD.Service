@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace FD.Service
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public abstract class FdFilterAttribute : Attribute
+    public abstract class FdFilterAttribute : System.Attribute
     {
         public int Order { get; set; }
         public string Message { get; set; }
@@ -20,11 +17,16 @@ namespace FD.Service
         public virtual void OnActionAfter(ActionAfterContent rc)
         {
         }
-        public virtual void OnActionExcuted(ActionExcutedContent rc) 
+        public virtual void OnResultBefore(ResultAfterContent rc)
         {
         }
-        public virtual void OnExceptionExecuting(ActionExceptionContent rc)
+        public virtual void OnResultAfter(ResultAfterContent rc) 
         {
+
+        }
+        public virtual void OnActionException(ActionExceptionContent rc)
+        {
+           
         }
     }
 }

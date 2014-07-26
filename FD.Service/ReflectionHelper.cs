@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FD.Service.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace FD.Service
 {
     internal class ReflectionHelper
     {
-        private static List<TypeAndAttrInfo> TypeList = new List<TypeAndAttrInfo>(256);
-        private static Hashtable MethodTable = Hashtable.Synchronized(new Hashtable(4096, StringComparer.OrdinalIgnoreCase));
+        private static readonly List<TypeAndAttrInfo> TypeList = new List<TypeAndAttrInfo>(256);
+
+        private static readonly Hashtable MethodTable =
+            Hashtable.Synchronized(new Hashtable(4096, StringComparer.OrdinalIgnoreCase));
 
         static ReflectionHelper()
         {
@@ -21,11 +24,12 @@ namespace FD.Service
         {
             var assemblies = BuildManager.GetReferencedAssemblies();
 
-            foreach (Assembly assembly in assemblies)
+            foreach (
+                var assembly in
+                    assemblies.Cast<Assembly>()
+                        .Where(assembly => !assembly.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase))
+                )
             {
-                if (assembly.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase))
-                    continue;
-
                 FoundFdService(assembly);
             }
         }
@@ -35,15 +39,15 @@ namespace FD.Service
             try
             {
                 var typeList = from t in assembly.GetExportedTypes()
-                               let a = t.GetCustomAttributes(typeof(FdServiceAttribute), false) as FdServiceAttribute[]
-                               let b = t.GetCustomAttributes(typeof(FdFilterAttribute), true) as FdFilterAttribute[]
-                               where a.Length > 0
-                               select new TypeAndAttrInfo
-                               {
-                                   ServiceType = t,
-                                   ServiceAttr = a[0],
-                                   FiltersAttr = b
-                               };
+                    let a = t.GetCustomAttributes(typeof (FdServiceAttribute), false) as FdServiceAttribute[]
+                    let b = t.GetCustomAttributes(typeof (FdFilterAttribute), true) as FdFilterAttribute[]
+                    where a.Length > 0
+                    select new TypeAndAttrInfo
+                    {
+                        ServiceType = t,
+                        ServiceAttr = a[0],
+                        FiltersAttr = b
+                    };
 
                 foreach (var item in typeList)
                 {
@@ -59,16 +63,19 @@ namespace FD.Service
 
         internal static InvokeInfo GetInvokeInfo(NamesPair pair)
         {
-            if (pair == null)
-                throw new ArgumentNullException("pair");
+            var vkInfo = new InvokeInfo
+            {
+                ServiceTypeInfo =
+                    TypeList.FirstOrDefault(
+                        t =>
+                            String.Compare(t.ServiceType.Name, pair.ServiceName, StringComparison.OrdinalIgnoreCase) ==
+                            0)
+            };
 
-            InvokeInfo vkInfo = new InvokeInfo();
-
-            vkInfo.ServiceTypeInfo = GetServiceType(pair.ServiceName);
             if (vkInfo.ServiceTypeInfo == null)
                 return null;
 
-            vkInfo.MethodAttrInfo = GetServiceMethod(vkInfo.ServiceTypeInfo.ServiceType, pair.MethodName);
+            vkInfo.MethodAttrInfo = GetServiceMethod(vkInfo.ServiceTypeInfo, pair.MethodName);
             if (vkInfo.MethodAttrInfo == null)
                 return null;
 
@@ -78,46 +85,37 @@ namespace FD.Service
 
             return vkInfo;
         }
-        private static TypeAndAttrInfo GetServiceType(string typeName)
+
+
+        private static MethodAndAttrInfo GetServiceMethod(TypeAndAttrInfo type, string methodName)
         {
-            if (string.IsNullOrEmpty(typeName))
-                throw new ArgumentNullException("typeName");
-
-
-
-            if (typeName.IndexOf('.') > 0)
-                return TypeList.FirstOrDefault(t => string.Compare(t.ServiceType.FullName, typeName, true) == 0);
-            else
-                return TypeList.FirstOrDefault(t => string.Compare(t.ServiceType.Name, typeName, true) == 0);
-        }
-
-        private static MethodAndAttrInfo GetServiceMethod(Type type, string methodName)
-        {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            if (string.IsNullOrEmpty(methodName))
-                throw new ArgumentNullException("methodName");
-
-            string key = methodName + "@" + type.FullName;
-            MethodAndAttrInfo mi = MethodTable[key] as MethodAndAttrInfo;
+            var key = methodName + "@" + type.ServiceType.FullName;
+            var mi = MethodTable[key] as MethodAndAttrInfo;
 
             if (mi != null)
                 return mi;
 
-            MethodInfo method = type.GetMethod(methodName, BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+            var method = type.ServiceType.GetMethod(methodName,
+                BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
             if (method == null)
                 return null;
+            var attrs = method.GetCustomAttributes(typeof (FdMethodAttribute), false) as FdMethodAttribute[];
+            if (attrs.Length < 1 && type.ServiceAttr.IsPublicAllMethod == false)
+                return null;
 
-            var attrs = method.GetCustomAttributes(typeof(FdMethodAttribute), false) as FdMethodAttribute[];
+            FdMethodAttribute methodAttr = null;
+            if (attrs.Length > 0)
+                methodAttr = attrs[0];
 
-            var filters = method.GetCustomAttributes(typeof(FdFilterAttribute), true) as FdFilterAttribute[];
+
+            var filters = method.GetCustomAttributes(typeof (FdFilterAttribute), true) as FdFilterAttribute[];
 
             mi = new MethodAndAttrInfo
             {
                 MethodInfo = method,
                 Parameters = method.GetParameters(),
-                MethodAttr = attrs[0],
+                MethodAttr = methodAttr,
                 FiltersAttr = filters
             };
 

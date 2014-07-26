@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web;
 
 namespace FD.Service
@@ -52,10 +50,17 @@ namespace FD.Service
         }
         public object Result { get; set; }
     }
-    public class ActionExcutedContent : ActionAfterContent
+    public class ResultBeforeContent : ActionAfterContent
     {
-        public ActionExcutedContent(IDictionary<string, object> parameters, HttpContext hc, string message, object Result)
-            : base(parameters, hc, message, Result)
+        public ResultBeforeContent(IDictionary<string, object> parameters, HttpContext hc, string message, object result)
+            : base(parameters, hc, message, result)
+        {
+        }
+    }
+    public class ResultAfterContent : ActionAfterContent
+    {
+        public ResultAfterContent(IDictionary<string, object> parameters, HttpContext hc, string message, object result)
+            : base(parameters, hc, message, result)
         {
         }
     }

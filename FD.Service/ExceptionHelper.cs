@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Web;
+using FD.Service.Model;
 
 namespace FD.Service
 {
-	public static class ExceptionHelper
+	internal static class ExceptionHelper
 	{
 		public static void Throw403Exception(HttpContext context)
 		{
 			throw new HttpException(403,
-				"很抱歉，您没有适合的权限访问该服务：" + context.Request.RawUrl);
+				Language.Exception403 + context.Request.RawUrl);
 		}
 
 		public static void Throw404Exception(HttpContext context)
 		{
 			throw new HttpException(404,
-				"没有找到能处理请求的服务类，当前请求地址：" + context.Request.RawUrl);
+               Language.Exception404 + context.Request.RawUrl);
 		}
 
-        public static void ThrowNotFoundService(Exception ex)
+        public static void ThrowNotFoundService(Exception exception)
         {
-            throw new SystemException("内部发生错误",ex);
+            throw new SystemException(Language.NotFoundService, exception);
         }
 	}
 }

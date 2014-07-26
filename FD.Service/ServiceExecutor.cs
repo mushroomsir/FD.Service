@@ -5,95 +5,45 @@ using System.Web;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Linq;
+using FD.Service.Model;
+
 namespace FD.Service
 {
-
-    public static class ServiceExecutor
+    internal static class ServiceExecutor
     {
         internal static void ProcessRequest(HttpContext context, ServiceInfo info)
         {
-            if (context == null)
-                throw new ArgumentNullException("context");
-            if (info == null || info.InvokeInfo == null)
-                throw new SystemException("Url Error");
-
-            ControllerExcute(context, info);
-
             if (string.IsNullOrEmpty(context.Request.ContentType))
                 context.Response.AddHeader("Content-Type", "text/html; charset=utf-8");
             else
                 context.Response.ContentType = context.Request.ContentType;
 
-            ActionExcute(context, info);
-        }
-        private static void ControllerExcute(HttpContext context, ServiceInfo info)
-        {
-            var filters = info.InvokeInfo.ServiceTypeInfo.FiltersAttr.OrderBy(n => n.Order);
-            if (filters.Any())
-            {
-                ControllerBeforeContent rc;
-                foreach (var item in filters)
-                {
-                    rc = new ControllerBeforeContent(context,item.Message);
-                    item.OnControllerBefore(rc);
-                }
-            }
-        }
-        private static void ActionExcute(HttpContext context, ServiceInfo info)
-        {
+            var filters = GetFilters(info);
+            FiltersInvoker.OnControllerBefore(context, filters);
+
             var paramslist = StructureParams(context, info);
-            object result = null;
             var methodInfo = info.InvokeInfo.MethodAttrInfo.MethodInfo;
-            var filters = info.InvokeInfo.MethodAttrInfo.FiltersAttr.OrderBy(n => n.Order);
+            FiltersInvoker.OnActionBefore(context, filters, paramslist);
+            object result = null;
             try
             {
-                if (filters.Any())
-                {
-                    ActionBeforeContent rc;
-                    foreach (var item in filters)
-                    {
-                        rc = new ActionBeforeContent(paramslist,context,item.Message);
-                        item.OnActionBefore(rc);
-                    }
-                }
-
                 result = CreateInvokeDelegate(methodInfo)
-                   .Invoke(info.InvokeInfo.ServiceInstance, paramslist.Select(n => n.Value).ToArray());
+                    .Invoke(info.InvokeInfo.ServiceInstance, paramslist.Select(n => n.Value).ToArray());
             }
             catch (Exception ex)
             {
-                if (filters.Any())
-                {
-                    ActionExceptionContent rc;
-                    foreach (var item in filters)
-                    {
-                        rc = new ActionExceptionContent(paramslist,context,item.Message,ex);
-                        item.OnExceptionExecuting(rc);
-                    }
-                }
+                FiltersInvoker.OnActionException(context, filters, paramslist, ex);
             }
-            result = BuildResult(info, result);
-            if (filters.Any())
-            {
-                ActionAfterContent rc;
-                foreach (var item in filters)
-                {
-                    rc = new ActionAfterContent(paramslist,context,item.Message,result);
-                    item.OnActionAfter(rc);
-                }
-            }
-            context.Response.Write(result);
-            if (filters.Any())
-            {
-                ActionExcutedContent rc;
-                foreach (var item in filters)
-                {
-                    rc = new ActionExcutedContent(paramslist,context,item.Message,result);
-                    item.OnActionExcuted(rc);
-                }
-            }
+            FiltersInvoker.OnActionAfter(context, filters, paramslist, result);
+            var renderResult = BuildResult(info, result);
+            FiltersInvoker.OnResultBefore(context, filters, paramslist, renderResult);
+            context.Response.Write(renderResult);
+            FiltersInvoker.OnResultAfter(context, filters, paramslist, renderResult);
         }
-
+        internal static IEnumerable<FdFilterAttribute> GetFilters(ServiceInfo info)
+        {
+           return info.InvokeInfo.MethodAttrInfo.FiltersAttr.OrderBy(n => n.Order);
+        }
         private static Func<object, object[], object> CreateInvokeDelegate(MethodInfo methodInfo)
         {
             var instanceParameter = Expression.Parameter(typeof(object), "instance");
@@ -101,11 +51,11 @@ namespace FD.Service
 
             var parameterExpressions = new List<Expression>();
             var paramInfos = methodInfo.GetParameters();
-            for (int i = 0; i < paramInfos.Length; i++)
+            for (var i = 0; i < paramInfos.Length; i++)
             {
-                BinaryExpression valueObj = Expression.ArrayIndex(
+                var valueObj = Expression.ArrayIndex(
                     parametersParameter, Expression.Constant(i));
-                UnaryExpression valueCast = Expression.Convert(
+                var valueCast = Expression.Convert(
                     valueObj, paramInfos[i].ParameterType);
 
                 parameterExpressions.Add(valueCast);
@@ -137,37 +87,44 @@ namespace FD.Service
                 return lambda.Compile();
             }
         }
+
         private static object BuildResult(ServiceInfo info, object result)
         {
-            var MethodAttrInfo = info.InvokeInfo.MethodAttrInfo;
-            if ((MethodAttrInfo.MethodInfo.ReturnType.IsClass && MethodAttrInfo.MethodInfo.ReturnType!=typeof(string)) || MethodAttrInfo.MethodAttr.ResponseFormat == ResponseFormat.Json)
+            var methodAttrInfo = info.InvokeInfo.MethodAttrInfo;
+
+            if (methodAttrInfo.MethodInfo.ReturnType.IsEnum)
+            {
+                result = (int) result;
+            }
+            else if (methodAttrInfo.MethodAttr != null && methodAttrInfo.MethodAttr.ResponseFormat == ResponseFormat.Json)
+            {
                 result = new JavaScriptSerializer().Serialize(result);
-            else if (MethodAttrInfo.MethodInfo.ReturnType.IsEnum)
-                result = (int)result;
+            }
             return result;
         }
+
         private static IDictionary<string,object> StructureParams(HttpContext context, ServiceInfo info)
         {
             var destType = info.InvokeInfo.MethodAttrInfo.Parameters;
             var paramslist =new Dictionary<string,object>();
-            for (var i = 0; i < destType.Length; i++)
+            foreach (var t in destType)
             {
-                Type type = destType[i].ParameterType;
+                Type type = t.ParameterType;
                 if (type == typeof(HttpRequest))
                 {
-                    paramslist.Add(destType[i].Name,context.Request);
+                    paramslist.Add(t.Name,context.Request);
                     continue;
                 }
                 else if (type == typeof(HttpContext))
                 {
-                    paramslist.Add(destType[i].Name, context);
+                    paramslist.Add(t.Name, context);
                     continue;
                 }
-                var values = context.Request[destType[i].Name];
+                var values = context.Request[t.Name];
                 if (values == null)
-                    throw new ArgumentNullException(destType[i].Name);
+                    throw new ArgumentNullException(t.Name);
 
-                paramslist.Add(destType[i].Name, Convert.ChangeType(values, type));
+                paramslist.Add(t.Name, Convert.ChangeType(values, type));
             }
             return paramslist;
         }

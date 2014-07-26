@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using FD.Service;
+﻿using FD.Service;
+
 namespace FdServiceTest.api
 {
     public class logAttribute : FdFilterAttribute
     {
-       
         public override void OnActionAfter(ActionAfterContent rc)
         {
             var message = rc.Message;
         }
-        public override void OnActionExcuted(ActionExcutedContent rc)
+        public override void OnResultAfter(ResultAfterContent rc)
         {
             var message = rc.Message;
         }
-        public override void OnExceptionExecuting(ActionExceptionContent rc)
+        public override void OnActionException(ActionExceptionContent rc)
         {
             var message = rc.Message;
         }
