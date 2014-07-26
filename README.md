@@ -1,13 +1,16 @@
 
 
 ##News
+July 26th: Version 1.0.0.5 is released.<br />
+1.增加Session 支持<br />
+
 July 20th: Version 1.0.0.4 is released.<br /> 
 1.增加filter
 
 May 27th: Version 1.0.0.3 is released.
 
 
-###Code samples
+##Configuration
 iis 7+  Webconfig configuration：
 ```webconfig   
 <system.webServer>
@@ -24,8 +27,8 @@ iis 6
  </<httpModules>
 </system.web>
 ````
-
-Method Statement：
+###Usage
+API Statement：
 ```csharp
 [FdService(SessionMode = SessionMode.Support, IsPublicAllMethod = true)]
 [Auth(Message="登录验证")]
