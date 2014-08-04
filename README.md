@@ -24,7 +24,7 @@ iis 6
 <system.web>
  <httpModules>
   <add name="UrlRoutingModule" type="FD.Service.UrlRoutingModule,FD.Service"/>
- </<httpModules>
+ </httpModules>
 </system.web>
 ````
 ###Usage
