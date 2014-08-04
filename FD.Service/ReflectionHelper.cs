@@ -23,14 +23,29 @@ namespace FD.Service
         private static void InitServiceTypes()
         {
             var assemblies = BuildManager.GetReferencedAssemblies();
-
-            foreach (
-                var assembly in
-                    assemblies.Cast<Assembly>()
-                        .Where(assembly => !assembly.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase))
-                )
+            if (FdRouteTable.AssemblyList != null)
             {
-                FoundFdService(assembly);
+                foreach (var item in FdRouteTable.AssemblyList)
+                {
+                    var item1 = item;
+                    var result =
+                        assemblies.Cast<Assembly>()
+                            .Where(n => String.Compare(n.GetName().Name, item1, StringComparison.OrdinalIgnoreCase) == 0);
+                    if (result.Any())
+                    {
+                        FoundFdService(result.First());
+                    }
+                }
+            }
+            else
+            {
+                var result =
+                    assemblies.Cast<Assembly>()
+                        .Where(assembly => !assembly.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase));
+                foreach (var assembly in result)
+                {
+                    FoundFdService(assembly);
+                }
             }
         }
 
