@@ -1,6 +1,9 @@
 
 
 ##News
+August 10th: Version 1.0.0.6 is Beta.<br />
+1.增加自定义异常处理<br />
+
 July 26th: Version 1.0.0.5 is released.<br />
 1.增加Session 支持<br />
 
