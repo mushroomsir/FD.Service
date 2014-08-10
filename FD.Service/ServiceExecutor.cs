@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Net;
 using System.Reflection;
+using System.Text;
 using System.Web;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
@@ -17,28 +19,52 @@ namespace FD.Service
                 context.Response.AddHeader("Content-Type", "text/html; charset=utf-8");
             else
                 context.Response.ContentType = context.Request.ContentType;
-
-            var filters = GetFilters(info);
-            FiltersInvoker.OnControllerBefore(context, filters);
-
-            var paramslist = StructureParams(context, info);
-            var methodInfo = info.InvokeInfo.MethodAttrInfo.MethodInfo;
-            FiltersInvoker.OnActionBefore(context, filters, paramslist);
-            object result = null;
             try
             {
+                var filters = GetFilters(info);
+                FiltersInvoker.OnControllerBefore(context, filters);
+
+                var paramslist = StructureParams(context, info);
+                var methodInfo = info.InvokeInfo.MethodAttrInfo.MethodInfo;
+                FiltersInvoker.OnActionBefore(context, filters, paramslist);
+                object result = null;
+
                 result = CreateInvokeDelegate(methodInfo)
                     .Invoke(info.InvokeInfo.ServiceInstance, paramslist.Select(n => n.Value).ToArray());
+
+                FiltersInvoker.OnActionAfter(context, filters, paramslist, result);
+                var renderResult = BuildResult(info, result);
+                context.Response.Write(renderResult);
+            }
+            catch (HttpResponseException exception)
+            {
+                context.Response.StatusCode = (int) exception.Response.StatusCode;
+                context.Response.ContentEncoding = exception.Response.StringContent.Encoding ?? Encoding.Default;
+                context.Response.Write(exception.Response.StringContent.Content);
             }
             catch (Exception ex)
             {
-                FiltersInvoker.OnActionException(context, filters, paramslist, ex);
+                var exception = info.InvokeInfo.MethodAttrInfo.ExceptionFilters;
+                if (exception != null && exception.Any())
+                {
+                    FiltersInvoker.OnException(context, exception, ex);
+                }
+                else
+                {
+                    var sb=new StringBuilder(255);
+                    sb.Append("<Error><Message>");
+                    sb.Append(HttpUtility.HtmlEncode(ex.Message));
+                    sb.Append("</Message><ExceptionType>");
+                    sb.Append(HttpUtility.HtmlEncode(ex.GetType()));
+                    sb.Append("</ExceptionType><StackTrace>");
+                    sb.Append(HttpUtility.HtmlEncode(ex.StackTrace));
+                    sb.Append("</StackTrace></Error>");
+                    context.Response.ContentType = "text/xml";
+                    context.Response.StatusCode = 500;
+                    context.Response.Write(sb.ToString());
+                }
             }
-            FiltersInvoker.OnActionAfter(context, filters, paramslist, result);
-            var renderResult = BuildResult(info, result);
-            FiltersInvoker.OnResultBefore(context, filters, paramslist, renderResult);
-            context.Response.Write(renderResult);
-            FiltersInvoker.OnResultAfter(context, filters, paramslist, renderResult);
+
         }
         internal static IEnumerable<FdFilterAttribute> GetFilters(ServiceInfo info)
         {

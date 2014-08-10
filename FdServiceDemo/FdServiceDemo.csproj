@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="api\AuthAttribute.cs" />
+    <Compile Include="api\ErrorAttribute.cs" />
     <Compile Include="api\logAttribute.cs" />
     <Compile Include="api\SchoolApi.cs" />
     <Compile Include="Global.asax.cs">

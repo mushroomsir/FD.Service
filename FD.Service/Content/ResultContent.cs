@@ -31,15 +31,6 @@ namespace FD.Service
         }
         public IDictionary<string, object> Parameters { get; set; }
     }
-    public class ActionExceptionContent : ActionBeforeContent
-    {
-        public ActionExceptionContent(IDictionary<string, object> parameters, HttpContext hc, string message, Exception ex)
-            : base(parameters, hc, message)
-        {
-            Exception = ex;
-        }
-        public Exception Exception { get; set; }
-    }
 
     public class ActionAfterContent : ActionBeforeContent
     {

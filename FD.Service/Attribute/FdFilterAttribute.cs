@@ -17,16 +17,5 @@ namespace FD.Service
         public virtual void OnActionAfter(ActionAfterContent rc)
         {
         }
-        public virtual void OnResultBefore(ResultAfterContent rc)
-        {
-        }
-        public virtual void OnResultAfter(ResultAfterContent rc) 
-        {
-
-        }
-        public virtual void OnActionException(ActionExceptionContent rc)
-        {
-           
-        }
     }
 }

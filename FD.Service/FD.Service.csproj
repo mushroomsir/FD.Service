@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\FdFilterAttribute.cs" />
+    <Compile Include="Attribute\IExceptionFilter.cs" />
+    <Compile Include="Content\ExceptionContent.cs" />
     <Compile Include="FiltersInvoker.cs" />
     <Compile Include="Enum\ResponseFormat.cs" />
     <Compile Include="ExceptionHelper.cs" />
@@ -52,10 +54,13 @@
     <Compile Include="FdRouteTable.cs" />
     <Compile Include="Handler\HandlerFactory.cs" />
     <Compile Include="Handler\SessionHandler.cs" />
+    <Compile Include="HttpResponseException.cs" />
+    <Compile Include="Model\HttpResponseMessage.cs" />
     <Compile Include="Model\Language.cs" />
     <Compile Include="Model\InvokeInfo.cs" />
     <Compile Include="Model\MethodAndAttrInfo.cs" />
     <Compile Include="Model\NamesPair.cs" />
+    <Compile Include="Model\StringContent.cs" />
     <Compile Include="Model\TypeAndAttrInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Attribute\FdServiceAttribute.cs" />

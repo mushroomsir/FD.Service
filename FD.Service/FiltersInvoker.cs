@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
+using FD.Service.Attribute;
 
 
 namespace FD.Service
@@ -36,36 +37,13 @@ namespace FD.Service
                 item.OnActionAfter(rc);
             }
         }
-
-        internal static void OnResultBefore(HttpContext context, IEnumerable<FdFilterAttribute> filters,
-            IDictionary<string, object> paramslist, object result)
+        internal static void OnException(HttpContext context, IEnumerable<IExceptionFilter> filters,Exception ex)
         {
             foreach (var item in filters)
             {
-                var rc = new ResultBeforeContent(paramslist, context, item.Message, result);
-                item.OnActionBefore(rc);
+                var rc = new ExceptionContent(context, ex.Message, ex);
+                item.OnException(rc);
             }
         }
-
-        internal static void OnResultAfter(HttpContext context, IEnumerable<FdFilterAttribute> filters,
-            IDictionary<string, object> paramslist, object result)
-        {
-            foreach (var item in filters)
-            {
-                var rc = new ResultAfterContent(paramslist, context, item.Message, result);
-                item.OnResultAfter(rc);
-            }
-        }
-
-        internal static void OnActionException(HttpContext context, IEnumerable<FdFilterAttribute> filters,
-            IDictionary<string, object> paramslist, Exception ex)
-        {
-            foreach (var item in filters)
-            {
-                var rc = new ActionExceptionContent(paramslist, context, item.Message, ex);
-                item.OnActionException(rc);
-            }
-        }
-
     }
 }

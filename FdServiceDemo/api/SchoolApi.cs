@@ -1,6 +1,10 @@
-﻿using System.Web;
+﻿using System.Linq;
+using System.Net;
+using System.Text;
+using System.Web;
 using FD.Service;
 using System.Collections.Generic;
+using FD.Service.Http;
 
 namespace FdServiceTest.api
 {
@@ -122,10 +126,30 @@ namespace FdServiceTest.api
 
         public static object PublicMethod(HttpContext hc)
         {
-            return "公开所有的方法";
+            return "Public all the Method";
         }
 
 
+        public static void OriginalErrorTest(HttpContext hc)
+        {
+            string str = null;
+            str.ToList();
+            throw new HttpException((int) HttpStatusCode.BadRequest, "Test");
+        }
+
+        public static void CustomErrorTest(HttpContext hc)
+        {
+            var hrMessage = new HttpResponseMessage(HttpStatusCode.Found);
+            hrMessage.StringContent = new StringContent("Value cannot be null", Encoding.UTF8);
+            throw new HttpResponseException(hrMessage);
+        }
+        [Error(Message = "Log Record")]
+        public static void OverrideErrorTest(HttpContext hc)
+        {
+            string str = null;
+            str.ToList();
+            throw new HttpException((int)HttpStatusCode.BadRequest, "Test");
+        }
     }
 
     public class Student

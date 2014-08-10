@@ -7,7 +7,7 @@
     <div id="textDetail"></div>
     
   
-</body>
+</body> 
 </html>
 <script src="/js/jquery-1.7.1.min.js"></script>
 <script type='text/javascript'>
@@ -63,12 +63,24 @@
 
 
        //$.get("/api/schoolapi/SessionTest/", null, function(data) {
-       //     $("#textDetail").append("<br/>11:session支持-SessionTest:" + data);
+        //     $("#textDetail").append("<br/>11: Support Session -SessionTest:" + data);
        // });
 
-       $.get("/api/schoolapi/PublicMethod/", null, function(data) {
-            $("#textDetail").append("<br/>12:公开所有的方法-PublicMethod:" + data);
+       //$.get("/api/schoolapi/PublicMethod/", null, function(data) {
+        //     $("#textDetail").append("<br/>12:Public all the Method-PublicMethod:" + data);
+        // });
+        $.get("/api/schoolapi/OriginalErrorTest/?r="+Date.parse(new Date()), null, function (data) {
+            $("#textDetail").append("<br/>13:System exception-OriginalErrorTest:" + data);
         });
+
+        $.get("/api/schoolapi/CustomErrorTest/?r="+Date.parse(new Date()), null, function (data) {
+            $("#textDetail").append("<br/>14:Custom error-CustomErrorTest:" + data);
+        });
+
+        $.get("/api/schoolapi/OverrideErrorTest/?r=" + Date.parse(new Date()), null, function (data) {
+            $("#textDetail").append("<br/>15:Exception filter-OverrideErrorTest:" + data);
+        });
+        
     });
 
 </script>

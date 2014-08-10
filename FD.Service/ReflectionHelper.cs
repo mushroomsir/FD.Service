@@ -1,4 +1,5 @@
-﻿using FD.Service.Model;
+﻿using FD.Service.Attribute;
+using FD.Service.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,7 +62,8 @@ namespace FD.Service
                     {
                         ServiceType = t,
                         ServiceAttr = a[0],
-                        FiltersAttr = b
+                        FiltersAttr = b,
+
                     };
 
                 foreach (var item in typeList)
@@ -123,15 +125,20 @@ namespace FD.Service
             if (attrs.Length > 0)
                 methodAttr = attrs[0];
 
-
             var filters = method.GetCustomAttributes(typeof (FdFilterAttribute), true) as FdFilterAttribute[];
+
+            IEnumerable<IExceptionFilter> resFilters = null;
+            if (filters.Length > 0)
+                resFilters = filters.Where(n => n is IExceptionFilter).Cast<IExceptionFilter>();
 
             mi = new MethodAndAttrInfo
             {
                 MethodInfo = method,
                 Parameters = method.GetParameters(),
                 MethodAttr = methodAttr,
-                FiltersAttr = filters
+                FiltersAttr = filters,
+                ExceptionFilters = resFilters
+
             };
 
             MethodTable[key] = mi;
