@@ -38,6 +38,7 @@ namespace FD.Service
             }
             catch (HttpResponseException exception)
             {
+                context.Response.TrySkipIisCustomErrors = true;
                 context.Response.StatusCode = (int) exception.Response.StatusCode;
                 context.Response.ContentEncoding = exception.Response.StringContent.Encoding ?? Encoding.Default;
                 context.Response.Write(exception.Response.StringContent.Content);
