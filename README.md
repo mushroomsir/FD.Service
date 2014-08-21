@@ -1,20 +1,13 @@
 
 
 ##News
-August 10th: Version 1.0.0.6 is Beta.<br />
-1.增加自定义异常处理<br />
+August 21th: Version 1.0.0.7<br />
+自定义异常下，禁用iis 7集成模式下iis自定义错误<br />
 
-July 26th: Version 1.0.0.5 is released.<br />
-1.增加Session 支持<br />
-
-July 20th: Version 1.0.0.4 is released.<br /> 
-1.增加filter
-
-May 27th: Version 1.0.0.3 is released.
 
 
 ##Configuration
-iis 7+  Webconfig configuration：
+iis 7 Integrated Mode：
 ```webconfig   
 <system.webServer>
     <modules>
