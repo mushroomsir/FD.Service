@@ -65,3 +65,9 @@ $.get("/api/SchoolApi/GetPointsByID/", { sid: 101, id: 100 }, function (data) {
 ````
 
 
+###Installation
+
+
+FD.Service can be installed via the nuget UI (as [FD.Service](https://www.nuget.org/packages/FD.Service/)), or via the nuget package manager console:
+
+   PM> Install-Package FD.Service
