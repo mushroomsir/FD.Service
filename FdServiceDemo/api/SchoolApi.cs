@@ -10,7 +10,7 @@ namespace FdServiceTest.api
 {
 
     [FdService(SessionMode = SessionMode.Support, IsPublicAllMethod = true)]
-    [Auth(Message = "登录验证")]
+    [Auth(Message = "Login Authorization")]
     public class SchoolApi
     {
 
@@ -108,8 +108,8 @@ namespace FdServiceTest.api
         }
 
         [FdMethod]
-        [Auth(Order = 1, Message = "权限验证")]
-        [log(Order = 2, Message = "日志记录")]
+        [Auth(Order = 1, Message = "Authorization")]
+        [log(Order = 2, Message = "Log Record")]
         public static int GetPointsById(int id, int sid)
         {
             return 10;
