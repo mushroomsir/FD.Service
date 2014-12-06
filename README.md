@@ -1,7 +1,7 @@
 
 
 ##News
-August 21th: Version 1.0.0.8<br />
+December 06 2014: Version 1.0.0.8<br />
 Add Register Route <br />
 
 
