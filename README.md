@@ -1,8 +1,8 @@
 
 
 ##News
-August 21th: Version 1.0.0.7<br />
-自定义异常下，禁用iis 7集成模式下iis自定义错误<br />
+August 21th: Version 1.0.0.8<br />
+Add Register Route <br />
 
 
 
@@ -27,12 +27,12 @@ iis 6
 API Statement：
 ```csharp
 [FdService(SessionMode = SessionMode.Support, IsPublicAllMethod = true)]
-[Auth(Message="登录验证")]
+[Auth(Message="Login Authorization")]
 public class SchoolApi
 {      
         [FdMethod]
-        [Auth(Order = 1, Message = "权限验证")]
-        [log(Order = 2,Message="日志记录")]
+        [Auth(Order = 1, Message = "Authorization")]
+        [log(Order = 2, Message = "Log Record")]
         public static int GetPointsByID(int id)
         {
             return 10;
