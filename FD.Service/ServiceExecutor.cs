@@ -142,7 +142,7 @@ namespace FD.Service
                     paramslist.Add(t.Name,context.Request);
                     continue;
                 }
-                else if (type == typeof(HttpContext))
+                if (type == typeof(HttpContext))
                 {
                     paramslist.Add(t.Name, context);
                     continue;

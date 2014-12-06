@@ -69,18 +69,35 @@
        //$.get("/api/schoolapi/PublicMethod/", null, function(data) {
         //     $("#textDetail").append("<br/>12:Public all the Method-PublicMethod:" + data);
         // });
-        $.get("/api/schoolapi/OriginalErrorTest/?r="+Date.parse(new Date()), null, function (data) {
-            $("#textDetail").append("<br/>13:System exception-OriginalErrorTest:" + data);
+        
+        $.ajax({
+            type: "get",
+            url: "/api/schoolapi/OriginalErrorTest/?r=" + Date.parse(new Date()),
+            contentType: "text/plain; charset=utf-8",
+            success: function (data) {
+             
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#textDetail").append("<br/><br/>13:System exception-OriginalErrorTest:" + XMLHttpRequest.responseText);
+            }
         });
 
-        $.get("/api/schoolapi/CustomErrorTest/?r="+Date.parse(new Date()), null, function (data) {
-            $("#textDetail").append("<br/>14:Custom error-CustomErrorTest:" + data);
+        $.ajax({
+            type: "get",
+            url: "/api/schoolapi/CustomErrorTest/?r=" + Date.parse(new Date()),
+            contentType: "text/plain; charset=utf-8",
+            success: function (data) {
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#textDetail").append("<br/><br/>14:Custom error-CustomErrorTest:" + XMLHttpRequest.responseText);
+            }
         });
 
         $.get("/api/schoolapi/OverrideErrorTest/?r=" + Date.parse(new Date()), null, function (data) {
-            $("#textDetail").append("<br/>15:Exception filter-OverrideErrorTest:" + data);
+            $("#textDetail").append("<br/><br/>15:Exception filter-OverrideErrorTest:" + data);
         });
-        
+
+      
     });
 
 </script>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using FD.Service;
+﻿using FD.Service;
 using FD.Service.Attribute;
 
 namespace FdServiceTest.api

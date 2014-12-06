@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FD.Service", "..\FD.Service\FD.Service.csproj", "{55D8D526-8BE0-4A6D-A277-E685A8152157}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FdServiceDemo", "..\FdServiceDemo\FdServiceDemo.csproj", "{CF4B3D7D-364E-444A-A04E-429DE85295AD}"

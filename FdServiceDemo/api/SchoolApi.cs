@@ -129,7 +129,6 @@ namespace FdServiceTest.api
             return "Public all the Method";
         }
 
-
         public static void OriginalErrorTest(HttpContext hc)
         {
             string str = null;
@@ -148,7 +147,6 @@ namespace FdServiceTest.api
         {
             string str = null;
             str.ToList();
-            throw new HttpException((int)HttpStatusCode.BadRequest, "Test");
         }
     }
 

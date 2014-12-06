@@ -9,6 +9,11 @@ namespace FdServiceTest
         protected void Application_Start(object sender, EventArgs e)
         {
             FdRouteTable.RegisterService("FdServiceTest");
+
+            FdRouteTable.RegisterRoute(
+                name: "Default",
+                url: "api/{controller}/{action}"
+                );
         }
 
         protected void Session_Start(object sender, EventArgs e)

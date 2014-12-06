@@ -18,35 +18,20 @@ namespace FD.Service
 
         static ReflectionHelper()
         {
-            InitServiceTypes();
+          
         }
 
-        private static void InitServiceTypes()
+        internal static void InitServiceTypes()
         {
             var assemblies = BuildManager.GetReferencedAssemblies();
-            if (FdRouteTable.AssemblyList != null)
+            if (FdRouteTable.AssemblyList == null)
+               return;
+            
+            foreach (var result in FdRouteTable.AssemblyList.Select(item1 => assemblies.Cast<Assembly>()
+                .Where(n => String.Compare(n.GetName().Name, item1, StringComparison.OrdinalIgnoreCase) == 0))
+                .Where(result => result.Any()))
             {
-                foreach (var item in FdRouteTable.AssemblyList)
-                {
-                    var item1 = item;
-                    var result =
-                        assemblies.Cast<Assembly>()
-                            .Where(n => String.Compare(n.GetName().Name, item1, StringComparison.OrdinalIgnoreCase) == 0);
-                    if (result.Any())
-                    {
-                        FoundFdService(result.First());
-                    }
-                }
-            }
-            else
-            {
-                var result =
-                    assemblies.Cast<Assembly>()
-                        .Where(assembly => !assembly.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase));
-                foreach (var assembly in result)
-                {
-                    FoundFdService(assembly);
-                }
+                FoundFdService(result.First());
             }
         }
 
