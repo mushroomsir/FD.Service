@@ -23,6 +23,19 @@ iis 6
  </httpModules>
 </system.web>
 ````
+
+### Register Service and Route on Global.asax
+```csharp
+    protected void Application_Start(object sender, EventArgs e)
+        {
+            FdRouteTable.RegisterService("FdServiceTest");
+
+            FdRouteTable.RegisterRoute(
+                name: "Default",
+                url: "api/{controller}/{action}"
+                );
+        }
+````
 ###Usage
 API Statement：
 ```csharp
