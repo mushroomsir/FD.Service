@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
@@ -27,9 +26,8 @@ namespace FD.Service
                 var paramslist = StructureParams(context, info);
                 var methodInfo = info.InvokeInfo.MethodAttrInfo.MethodInfo;
                 FiltersInvoker.OnActionBefore(context, filters, paramslist);
-                object result = null;
 
-                result = CreateInvokeDelegate(methodInfo)
+                var result = CreateInvokeDelegate(methodInfo)
                     .Invoke(info.InvokeInfo.ServiceInstance, paramslist.Select(n => n.Value).ToArray());
 
                 FiltersInvoker.OnActionAfter(context, filters, paramslist, result);
@@ -121,9 +119,13 @@ namespace FD.Service
 
             if (methodAttrInfo.MethodInfo.ReturnType.IsEnum)
             {
-                result = (int) result;
+                result = (int)result;
             }
             else if (methodAttrInfo.MethodAttr != null && methodAttrInfo.MethodAttr.ResponseFormat == ResponseFormat.Json)
+            {
+                result = new JavaScriptSerializer().Serialize(result);
+            }
+            else if (methodAttrInfo.MethodInfo.ReturnType.IsClass)
             {
                 result = new JavaScriptSerializer().Serialize(result);
             }

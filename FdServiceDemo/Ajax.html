@@ -14,34 +14,34 @@
     $(function() {
 
        //$.get("/api/SchoolApi/GetTeacherName/", null, function(data) {
-        //     $("#textDetail").append("<br/>1:Normal invoke-GetTeacherName: " + data);
+       //      $("#textDetail").append("<br/>1:Normal invoke-GetTeacherName: " + data);
        // });
 
 
        //$.get("/api/SchoolApi/GetNameById/", { StudentId: 123 }, function(data) {
-        //     $("#textDetail").append("<br/>2:Parameter invoke-GetNameById:" + data);
+       //      $("#textDetail").append("<br/>2:Parameter invoke-GetNameById:" + data);
        // });
 
        //$.get("/api/SchoolApi/GetSelfName/?selfname=Tyr", null, function(data) {
-        //     $("#textDetail").append("<br/>3:HttpRequest invoke-GetSelfName:" + data);
+       //      $("#textDetail").append("<br/>3:HttpRequest invoke-GetSelfName:" + data);
        // });
 
        //$.get("/api/SchoolApi/GetScore/", { score: 1.111 }, function(data) {
-        //     $("#textDetail").append("<br/>4:decimal invoke-GetScore:" + data);
+       //      $("#textDetail").append("<br/>4:decimal invoke-GetScore:" + data);
        // });
 
-       //$.get("/api/SchoolApi/GetTeacherInfo/", null, function(data) {
-        //     $("#textDetail").append("<br/>5:Default object serialize -GetTeacherInfo:" + data);
-       // });
+       $.get("/api/SchoolApi/GetTeacherInfo/", null, function(data) {
+             $("#textDetail").append("<br/>5:Default object serialize -GetTeacherInfo:" + data);
+        });
 
 
        //$.get("/api/SchoolApi/GetStudentList/", null, function(data) {
-        //     $("#textDetail").append("<br/>6:net Generic serialize-GetStudentList:" + data);
+       //      $("#textDetail").append("<br/>6:net Generic serialize-GetStudentList:" + data);
        // });
 
 
        //$.get("/api/SchoolApi/GetStudentListByClassId/", { classId: 1 }, function(data) {
-        //     $("#textDetail").append("<br/>7: business logic invoke-GetStudentListByClassId:" + data);
+       //      $("#textDetail").append("<br/>7: business logic invoke-GetStudentListByClassId:" + data);
        // });
 
        //$.get("/api/SchoolApi/GetSchoolStatus/", null, function(data) {
@@ -58,44 +58,44 @@
        // });
 
        //$.get("/api/schoolapi/getpointsbyid/", { sid: 101, id: 100 }, function(data) {
-        //     $("#textDetail").append("<br/>10:Login Authorization filter-GetPointsByID:" + data);
+       //      $("#textDetail").append("<br/>10:Login Authorization filter-GetPointsByID:" + data);
        // });
 
 
        //$.get("/api/schoolapi/SessionTest/", null, function(data) {
-        //     $("#textDetail").append("<br/>11: Support Session -SessionTest:" + data);
+       //      $("#textDetail").append("<br/>11: Support Session -SessionTest:" + data);
        // });
 
        //$.get("/api/schoolapi/PublicMethod/", null, function(data) {
-        //     $("#textDetail").append("<br/>12:Public all the Method-PublicMethod:" + data);
-        // });
+       //      $("#textDetail").append("<br/>12:Public all the Method-PublicMethod:" + data);
+       //  });
         
-        $.ajax({
-            type: "get",
-            url: "/api/schoolapi/OriginalErrorTest/?r=" + Date.parse(new Date()),
-            contentType: "text/plain; charset=utf-8",
-            success: function (data) {
+       // $.ajax({
+       //     type: "get",
+       //     url: "/api/schoolapi/OriginalErrorTest/?r=" + Date.parse(new Date()),
+       //     contentType: "text/plain; charset=utf-8",
+       //     success: function (data) {
              
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                $("#textDetail").append("<br/><br/>13:System exception-OriginalErrorTest:" + XMLHttpRequest.responseText);
-            }
-        });
+       //     },
+       //     error: function (XMLHttpRequest, textStatus, errorThrown) {
+       //         $("#textDetail").append("<br/><br/>13:System exception-OriginalErrorTest:" + XMLHttpRequest.responseText);
+       //     }
+       // });
 
-        $.ajax({
-            type: "get",
-            url: "/api/schoolapi/CustomErrorTest/?r=" + Date.parse(new Date()),
-            contentType: "text/plain; charset=utf-8",
-            success: function (data) {
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                $("#textDetail").append("<br/><br/>14:Custom error-CustomErrorTest:" + XMLHttpRequest.responseText);
-            }
-        });
+       // $.ajax({
+       //     type: "get",
+       //     url: "/api/schoolapi/CustomErrorTest/?r=" + Date.parse(new Date()),
+       //     contentType: "text/plain; charset=utf-8",
+       //     success: function (data) {
+       //     },
+       //     error: function (XMLHttpRequest, textStatus, errorThrown) {
+       //         $("#textDetail").append("<br/><br/>14:Custom error-CustomErrorTest:" + XMLHttpRequest.responseText);
+       //     }
+       // });
 
-        $.get("/api/schoolapi/OverrideErrorTest/?r=" + Date.parse(new Date()), null, function (data) {
-            $("#textDetail").append("<br/><br/>15:Exception filter-OverrideErrorTest:" + data);
-        });
+       // $.get("/api/schoolapi/OverrideErrorTest/?r=" + Date.parse(new Date()), null, function (data) {
+       //     $("#textDetail").append("<br/><br/>15:Exception filter-OverrideErrorTest:" + data);
+       // });
 
       
     });

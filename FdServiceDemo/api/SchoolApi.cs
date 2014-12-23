@@ -5,6 +5,7 @@ using System.Web;
 using FD.Service;
 using System.Collections.Generic;
 using FD.Service.Http;
+using System;
 
 namespace FdServiceTest.api
 {
@@ -33,16 +34,14 @@ namespace FdServiceTest.api
         }
 
         [FdMethod]
-
         public static decimal GetScore(decimal score)
         {
             return score;
         }
 
-        [FdMethod(ResponseFormat = ResponseFormat.Json)]
         public static Student GetTeacherInfo()
         {
-            return new Student()
+            return new Student
             {
                 Age = 33,
                 Name = "Odin"
@@ -52,14 +51,14 @@ namespace FdServiceTest.api
         [FdMethod(ResponseFormat = ResponseFormat.Json)]
         public static List<Student> GetStudentList()
         {
-            return new List<Student>()
+            return new List<Student>
             {
-                new Student()
+                new Student
                 {
                     Age = 13,
                     Name = "LOKI"
                 },
-                new Student()
+                new Student
                 {
                     Age = 14,
                     Name = "Frigga"
@@ -73,9 +72,9 @@ namespace FdServiceTest.api
 
             if (classId == 1)
             {
-                return new List<Student>()
+                return new List<Student>
                 {
-                    new Student()
+                    new Student
                     {
                         Age = 14,
                         Name = "Frigga"
@@ -84,9 +83,9 @@ namespace FdServiceTest.api
             }
             else
             {
-                return new List<Student>()
+                return new List<Student>
                 {
-                    new Student()
+                    new Student
                     {
                         Age = 13,
                         Name = "LOKI"
@@ -98,7 +97,7 @@ namespace FdServiceTest.api
         [FdMethod]
         public static Statu GetSchoolStatus()
         {
-            return Statu.alive;
+            return Statu.Alive;
         }
 
         [FdMethod]
@@ -158,7 +157,7 @@ namespace FdServiceTest.api
 
     public enum Statu
     {
-        alive = 1,
-        dead = 2
+        Alive = 1,
+        Dead = 2
     }
 }
